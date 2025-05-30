@@ -1,26 +1,21 @@
 package com.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import com.form.HomeForm;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
-import com.form.HomeForm;
-
 @Controller
+@RequiredArgsConstructor
 public class Home {
 
-	@Autowired
-	private HomeForm homeForm;
-	
-	public Home() {
-		super();
-	}
+    private final HomeForm homeForm;
 
-	@GetMapping(path="/")
-	public String index(Model model) {
-		model.addAttribute("demoForm", this.homeForm);
-		return "index";
-	}
-	
+    @GetMapping
+    public String index(Model model) {
+        model.addAttribute("demoForm", this.homeForm);
+        return "index";
+    }
+
 }

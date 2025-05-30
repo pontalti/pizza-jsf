@@ -1,65 +1,62 @@
 package com.controller;
 
-import java.util.Set;
-import java.util.TreeSet;
-
+import com.builder.PizzaBuilder;
+import com.model.Pizza;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.builder.PizzaBuilder;
-import com.model.Pizza;
+import java.util.Objects;
+import java.util.Set;
+import java.util.TreeSet;
 
 @RestController
 @RequestMapping("/pizza")
 public class PizzaController {
 
-	public PizzaController() {
-		super();
-	}
+    public PizzaController() {
+        super();
+    }
 
-	@GetMapping(path = "", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-	public @ResponseBody ResponseEntity<Set<Pizza>> getAll() {
-		ResponseEntity<Set<Pizza>> entity = new ResponseEntity<Set<Pizza>>(listPizza(), HttpStatus.OK);
-		return entity;
-	}
+    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> getAll() {
+        return new ResponseEntity<>(listPizza(), HttpStatus.OK);
+    }
 
-	@GetMapping(path = "/{name}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-	public @ResponseBody ResponseEntity<Pizza> getPizza(@PathVariable("name") String name) {
-		Pizza pizza = listPizza().stream().filter(x -> x.getName().equals(name)).findFirst().orElse(null);
-		ResponseEntity<Pizza> entity = null;
-		if (null != pizza) {
-			entity = new ResponseEntity<Pizza>(pizza, HttpStatus.OK);
-		} else {
-			entity = new ResponseEntity<Pizza>(pizza, HttpStatus.NO_CONTENT);
-		}
+    @GetMapping(path = "/{name}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> getPizza(@PathVariable("name") String name) {
+        Pizza pizza = listPizza().stream().filter(x -> x.getName().equals(name)).findFirst().orElse(null);
+        if (Objects.nonNull(pizza)) {
+            return new ResponseEntity<>(pizza, HttpStatus.OK);
+        }
+        return new ResponseEntity<Pizza>(HttpStatus.NO_CONTENT);
+    }
 
-		return entity;
-	}
+    private Set<Pizza> listPizza() {
+        var pizzas = new TreeSet<Pizza>();
 
-	private Set<Pizza> listPizza() {
-		Set<Pizza> pizzas = new TreeSet<Pizza>();
+        var pizzaBuilder = new PizzaBuilder(10)
+                .setName("Pizza 1")
+                .withBacon(true)
+                .withCheese(true)
+                .withTomato(true);
 
-		PizzaBuilder pizzaBuilder = new PizzaBuilder(10).setName("Pizza 1").withBacon(true).withCheese(true)
-				.withTomato(true);
+        pizzas.add(pizzaBuilder.build());
 
-		pizzas.add(pizzaBuilder.build());
+        pizzaBuilder.setName("Pizza 4");
+        pizzas.add(pizzaBuilder.build());
 
-		pizzaBuilder.setName("Pizza 4");
-		pizzas.add(pizzaBuilder.build());
+        pizzaBuilder.setName("Pizza 2");
+        pizzas.add(pizzaBuilder.build());
 
-		pizzaBuilder.setName("Pizza 2");
-		pizzas.add(pizzaBuilder.build());
+        pizzaBuilder.setName("Pizza 5");
+        pizzas.add(pizzaBuilder.build());
 
-		pizzaBuilder.setName("Pizza 5");
-		pizzas.add(pizzaBuilder.build());
-
-		return pizzas;
-	}
+        return pizzas;
+    }
 
 }

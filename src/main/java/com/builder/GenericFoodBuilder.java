@@ -1,36 +1,24 @@
 package com.builder;
 
+import lombok.Getter;
+
+@Getter
 public abstract class GenericFoodBuilder<T, B> {
 
-	protected String 	name;
-	protected Integer 	size;
-	protected Boolean 	cheese;
-	protected Boolean 	tomato;
-	protected Boolean 	bacon;
-	
-	public abstract B 	setSize(Integer size);
-	public abstract B 	withCheese(Boolean cheese);
-	public abstract B 	withTomato(Boolean tomato);
-	public abstract B 	withBacon(Boolean bacon);
-	public abstract T 	build();
-	
-	public String getName() {
-		return name;
-	}
-	public Integer getSize() {
-		return size;
-	}
+    protected Integer size;
+    protected Boolean cheese;
+    protected Boolean tomato;
+    protected Boolean bacon;
+    protected String name;
 
-	public Boolean getCheese() {
-		return cheese;
-	}
+    public abstract B setSize(Integer size);
 
-	public Boolean getTomato() {
-		return tomato;
-	}
+    public abstract B withCheese(Boolean cheese);
 
-	public Boolean getBacon() {
-		return bacon;
-}
-	
+    public abstract B withTomato(Boolean tomato);
+
+    public abstract B withBacon(Boolean bacon);
+
+    public abstract T build();
+
 }
