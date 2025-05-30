@@ -29,11 +29,14 @@ public class PizzaController {
 
     @GetMapping(path = "/{name}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> getPizza(@PathVariable("name") String name) {
-        Pizza pizza = listPizza().stream().filter(x -> x.getName().equals(name)).findFirst().orElse(null);
+        var pizza = listPizza().stream()
+                .filter(x -> x.getName().equals(name))
+                .findFirst()
+                .orElse(null);
         if (Objects.nonNull(pizza)) {
             return new ResponseEntity<>(pizza, HttpStatus.OK);
         }
-        return new ResponseEntity<Pizza>(HttpStatus.NO_CONTENT);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     private Set<Pizza> listPizza() {

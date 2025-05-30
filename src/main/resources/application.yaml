@@ -1,6 +1,18 @@
 spring:
   devtools:
     add-properties: true
+  mvc:
+    view:
+      prefix: /WEB-INF/views/
+      suffix: .xhtml
+
 logging:
   level:
     web: DEBUG
+
+primefaces:
+  client-side-validation: true
+
+jakarta:
+  faces:
+    PROJECT_STAGE: Development
